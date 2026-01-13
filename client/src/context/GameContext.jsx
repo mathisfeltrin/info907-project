@@ -25,31 +25,36 @@ export function GameProvider({ children }) {
 
   const selectEntity = useCallback((type, name) => {
     setCurrentTrio(prev => {
-      const updated = { ...prev, [type]: name };
-
-      if (updated.driver && updated.car && updated.circuit) {
-        setCompletedTrios(trios => [...trios, updated]);
-        setAvailableDrivers(set => {
-          const newSet = new Set(set);
-          newSet.delete(updated.driver);
-          return newSet;
-        });
-        setAvailableCars(set => {
-          const newSet = new Set(set);
-          newSet.delete(updated.car);
-          return newSet;
-        });
-        setAvailableCircuits(set => {
-          const newSet = new Set(set);
-          newSet.delete(updated.circuit);
-          return newSet;
-        });
-        return { driver: null, car: null, circuit: null };
+      // Si l'entité est déjà sélectionnée, on la désélectionne
+      if (prev[type] === name) {
+        return { ...prev, [type]: null };
       }
-
-      return updated;
+      // Sinon on la sélectionne
+      return { ...prev, [type]: name };
     });
   }, []);
+
+  const completeTrio = useCallback(() => {
+    if (currentTrio.driver && currentTrio.car && currentTrio.circuit) {
+      setCompletedTrios(trios => [...trios, currentTrio]);
+      setAvailableDrivers(set => {
+        const newSet = new Set(set);
+        newSet.delete(currentTrio.driver);
+        return newSet;
+      });
+      setAvailableCars(set => {
+        const newSet = new Set(set);
+        newSet.delete(currentTrio.car);
+        return newSet;
+      });
+      setAvailableCircuits(set => {
+        const newSet = new Set(set);
+        newSet.delete(currentTrio.circuit);
+        return newSet;
+      });
+      setCurrentTrio({ driver: null, car: null, circuit: null });
+    }
+  }, [currentTrio]);
 
   const removeTrio = useCallback((index) => {
     const trio = completedTrios[index];
@@ -99,6 +104,7 @@ export function GameProvider({ children }) {
     trioScores,
     finalScore,
     selectEntity,
+    completeTrio,
     removeTrio,
     goToReview,
     setResults,

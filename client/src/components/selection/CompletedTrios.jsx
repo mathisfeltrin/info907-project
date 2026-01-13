@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { TrioDisplay } from '../shared/TrioDisplay';
+import { useGame } from '../../context/GameContext';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -26,6 +27,8 @@ const EmptyState = styled.div`
 `;
 
 export function CompletedTrios({ trios }) {
+  const { removeTrio } = useGame();
+
   if (trios.length === 0) {
     return (
       <Container>
@@ -40,7 +43,12 @@ export function CompletedTrios({ trios }) {
       <Title>Trios complétés ({trios.length}/8)</Title>
       <TrioList>
         {trios.map((trio, index) => (
-          <TrioDisplay key={index} trio={trio} size="small" />
+          <TrioDisplay
+            key={index}
+            trio={trio}
+            size="small"
+            onRemove={() => removeTrio(index)}
+          />
         ))}
       </TrioList>
     </Container>

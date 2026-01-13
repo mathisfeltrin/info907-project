@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useGame } from '../../context/GameContext';
+import { Button } from '../shared/Button';
 
 const Container = styled.div`
   padding: 1.5rem;
@@ -61,6 +63,20 @@ const Connector = styled.div`
   color: #9ca3af;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+`;
+
+const Hint = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+`;
+
 const getIcon = (type) => {
   switch (type) {
     case 'driver': return '👤';
@@ -71,6 +87,9 @@ const getIcon = (type) => {
 };
 
 export function TrioBuilder({ currentTrio }) {
+  const { completeTrio } = useGame();
+  const isComplete = currentTrio.driver && currentTrio.car && currentTrio.circuit;
+
   return (
     <Container>
       <Title>Trio en construction</Title>
@@ -103,6 +122,16 @@ export function TrioBuilder({ currentTrio }) {
           </SlotValue>
         </Slot>
       </TrioContainer>
+
+      <Actions>
+        <Button onClick={completeTrio} disabled={!isComplete}>
+          Valider le trio
+        </Button>
+      </Actions>
+
+      <Hint>
+        Cliquez sur une sélection pour la désélectionner
+      </Hint>
     </Container>
   );
 }

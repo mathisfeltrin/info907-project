@@ -6,16 +6,201 @@ app.use(cors());
 app.use(express.json());
 
 // Ontologie - caractéristiques pour classification
-const rawCharacteristics = [];
+const rawDifferences = [
+  // Pilotage
+  { agressif: "Agressif", fluide: "Fluide" },
+  {
+    adherenceForte: "Adhérence forte",
+    adherenceModeree: "Adhérence modérée",
+    adherenceFaible: "Adhérence faible",
+  },
+
+  // Course
+  { longue: "Longue", courte: "Courte" },
+  { lineaire: "Linéaire", etape: "Étape", tours: "Tours" },
+
+  // Aéro
+  {
+    aeroImportant: "Aérodynamique importante",
+    aeroFaible: "Aérodynamique faible",
+  },
+
+  // Motorisation
+  { thermique: "Thermique", electrique: "Électrique", hybride: "Hybride" },
+
+  // Écurie
+  {
+    ecuriePerformance: "Écurie de performance",
+    ecurieEngagement: "Écurie engagement",
+  },
+
+  // Terrain
+  { circuit: "Circuit", nonCircuit: "Non Circuit" },
+  { unique: "Unique", varie: "Varié" },
+  {
+    bitume: "Bitume",
+    terre: "Terre",
+    sable: "Sable",
+    neigeGlace: "Neige/Glace",
+  },
+  { escarpe: "Escarpe", nonEscarpe: "Non Escarpe" },
+];
 
 // Exemples de pilotes
-const drivers = {};
+const drivers = {
+  Verstappen: [
+    "agressif",
+    "adherenceForte",
+    "longue",
+    "tours",
+    "aeroImportant",
+    "hybride",
+    "ecuriePerformance",
+    "circuit",
+    "unique",
+    100,
+    0,
+    0,
+    0,
+    "nonEscarpe",
+  ],
+  Hamilton: [
+    "fluide",
+    "adherenceForte",
+    "longue",
+    "tours",
+    "aeroImportant",
+    "hybride",
+    "ecuriePerformance",
+    "circuit",
+    "unique",
+    100,
+    0,
+    0,
+    0,
+    "nonEscarpe",
+  ],
+  Loeb: [
+    "agressif",
+    "adherenceModeree",
+    "courte",
+    "etape",
+    "aeroFaible",
+    "thermique",
+    "ecuriePerformance",
+    "nonCircuit",
+    "varie",
+    60,
+    30,
+    0,
+    10,
+    "escarpe",
+  ],
+  Petty: [
+    "fluide",
+    "adherenceForte",
+    "longue",
+    "tours",
+    "aeroImportant",
+    "thermique",
+    "ecuriePerformance",
+    "circuit",
+    "unique",
+    100,
+    0,
+    0,
+    0,
+    "nonEscarpe",
+  ],
+  Block: [
+    "agressif",
+    "adherenceFaible",
+    "longue",
+    "lineaire",
+    "aeroFaible",
+    "thermique",
+    "ecurieEngagement",
+    "nonCircuit",
+    "unique",
+    100,
+    0,
+    0,
+    0,
+    "escarpe",
+  ],
+  Peterhansel: [
+    "fluide",
+    "adherenceModeree",
+    "longue",
+    "etape",
+    "aeroFaible",
+    "electrique",
+    "ecuriePerformance",
+    "nonCircuit",
+    "varie",
+    0,
+    30,
+    70,
+    0,
+    "escarpe",
+  ],
+  Mouton: [
+    "fluide",
+    "adherenceModeree",
+    "courte",
+    "etape",
+    "aeroFaible",
+    "thermique",
+    "ecuriePerformance",
+    "nonCircuit",
+    "varie",
+    60,
+    30,
+    0,
+    10,
+    "escarpe",
+  ],
+  Ickx: [
+    "fluide",
+    "adherenceForte",
+    "longue",
+    "tours",
+    "aeroImportant",
+    "thermique",
+    "ecuriePerformance",
+    "circuit",
+    "unique",
+    100,
+    0,
+    0,
+    0,
+    "nonEscarpe",
+  ],
+};
 
 // Exemples de circuits
-const circuits = {};
+const circuits = {
+  Spa: [],
+  Monaco: [],
+  MonteCarlo: [],
+  Indianapolis: [],
+  PikesPeak: [],
+  Dakar: [],
+  Suede: [],
+  LeMans: [],
+};
 
 // Exemples de voitures
-const cars = {};
+const cars = {
+  RB23: [],
+  W14: [],
+  C4WRC: [],
+  PlymouthSuperbird: [],
+  Hoonicorn: [],
+  DaciaSandrier: [],
+  AudiQuattro: [],
+  Porsche917: [],
+};
 
 // Fonction de calcul de distance entre deux entités
 function getDistance(obj1, obj2) {
@@ -35,7 +220,7 @@ function getDistance(obj1, obj2) {
 
 // Routes API
 app.get("/api/characteristics", (req, res) => {
-  res.json(rawCharacteristics);
+  res.json(rawDifferences);
 });
 
 app.get("/api/drivers", (req, res) => {
@@ -52,7 +237,7 @@ app.get("/api/cars", (req, res) => {
 
 app.get("/api/all", (req, res) => {
   res.json({
-    characteristics: rawCharacteristics,
+    characteristics: rawDifferences,
     drivers,
     circuits,
     cars,

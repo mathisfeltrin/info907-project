@@ -49,7 +49,7 @@ npm run dev
 - `GET /api/drivers` - Récupère les pilotes
 - `GET /api/circuits` - Récupère les circuits
 - `GET /api/cars` - Récupère les voitures
-- `GET /api/characteristics` - Récupère les caractéristiques
+- `GET /api/differences` - Récupère les caractéristiques
 - `POST /api/distance` - Calcule la distance entre deux entités
 
 ## Fonctionnalités

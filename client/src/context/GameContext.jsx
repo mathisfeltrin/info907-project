@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useGameData } from '../hooks/useGameData';
 
 const GameContext = createContext(null);
@@ -15,7 +15,7 @@ export function GameProvider({ children }) {
   const [trioScores, setTrioScores] = useState([]);
   const [finalScore, setFinalScore] = useState(null);
 
-  useState(() => {
+  useEffect(() => {
     if (data) {
       setAvailableDrivers(new Set(Object.keys(data.drivers)));
       setAvailableCars(new Set(Object.keys(data.cars)));

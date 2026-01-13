@@ -1,16 +1,65 @@
-import styled from 'styled-components';
-import { EntityCard } from './EntityCard';
-import { ScoreBadge } from './ScoreBadge';
+import styled from "styled-components";
+import { EntityCard } from "./EntityCard";
+import { ScoreBadge } from "./ScoreBadge";
+
+export function TrioDisplay({
+  trio,
+  scores = null,
+  onRemove = null,
+  size = "medium",
+}) {
+  return (
+    <Container $size={size}>
+      <EntityWrapper>
+        <EntityCard
+          name={trio.driver || "?"}
+          type="driver"
+          disabled
+          isAvailable={false}
+        />
+      </EntityWrapper>
+      <Connector>+</Connector>
+      <EntityWrapper>
+        <EntityCard
+          name={trio.car || "?"}
+          type="car"
+          disabled
+          isAvailable={false}
+        />
+      </EntityWrapper>
+      <Connector>+</Connector>
+      <EntityWrapper>
+        <EntityCard
+          name={trio.circuit || "?"}
+          type="circuit"
+          disabled
+          isAvailable={false}
+        />
+      </EntityWrapper>
+
+      {scores && (
+        <ScoreWrapper>
+          <ScoreBadge value={scores.average} size={size} />
+        </ScoreWrapper>
+      )}
+
+      {onRemove && <RemoveButton onClick={onRemove}>×</RemoveButton>}
+    </Container>
+  );
+}
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: ${props => {
+  padding: ${(props) => {
     switch (props.$size) {
-      case 'small': return '0.5rem';
-      case 'large': return '1.5rem';
-      default: return '1rem';
+      case "small":
+        return "0.5rem";
+      case "large":
+        return "1.5rem";
+      default:
+        return "1rem";
     }
   }};
   border: 1px solid #e5e7eb;
@@ -53,51 +102,3 @@ const RemoveButton = styled.button`
     background: #dc2626;
   }
 `;
-
-export function TrioDisplay({
-  trio,
-  scores = null,
-  onRemove = null,
-  size = 'medium'
-}) {
-  return (
-    <Container $size={size}>
-      <EntityWrapper>
-        <EntityCard
-          name={trio.driver || '?'}
-          type="driver"
-          disabled
-          isAvailable={false}
-        />
-      </EntityWrapper>
-      <Connector>+</Connector>
-      <EntityWrapper>
-        <EntityCard
-          name={trio.car || '?'}
-          type="car"
-          disabled
-          isAvailable={false}
-        />
-      </EntityWrapper>
-      <Connector>+</Connector>
-      <EntityWrapper>
-        <EntityCard
-          name={trio.circuit || '?'}
-          type="circuit"
-          disabled
-          isAvailable={false}
-        />
-      </EntityWrapper>
-
-      {scores && (
-        <ScoreWrapper>
-          <ScoreBadge value={scores.average} size={size} />
-        </ScoreWrapper>
-      )}
-
-      {onRemove && (
-        <RemoveButton onClick={onRemove}>×</RemoveButton>
-      )}
-    </Container>
-  );
-}

@@ -1,9 +1,78 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { useGame } from '../../context/GameContext';
-import { useScoreCalculation } from '../../hooks/useScoreCalculation';
-import { TrioDisplay } from '../shared/TrioDisplay';
-import { Button } from '../shared/Button';
+import { useState } from "react";
+import styled from "styled-components";
+import { useGame } from "../../context/GameContext";
+import { useScoreCalculation } from "../../hooks/useScoreCalculation";
+import { TrioDisplay } from "../shared/TrioDisplay";
+import { Button } from "../shared/Button";
+
+export function ReviewPanel() {
+  const { completedTrios, removeTrio, setResults, drivers, cars, circuits } =
+    useGame();
+  const { calculateScores, calculating } = useScoreCalculation();
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async () => {
+    try {
+      setError(null);
+      const { trioScores, finalScore } = await calculateScores(completedTrios, {
+        drivers,
+        cars,
+        circuits,
+      });
+      setResults(trioScores, finalScore);
+    } catch (err) {
+      setError("Erreur lors du calcul des scores: " + err.message);
+    }
+  };
+
+  if (calculating) {
+    return (
+      <Container>
+        <LoadingMessage>Calcul des scores en cours... ⏳</LoadingMessage>
+      </Container>
+    );
+  }
+
+  return (
+    <Container>
+      <Header>
+        <Title>Révision de vos associations</Title>
+        <Subtitle>
+          Vérifiez vos {completedTrios.length} trios avant de calculer le score
+        </Subtitle>
+      </Header>
+
+      <TrioList>
+        {completedTrios.map((trio, index) => (
+          <TrioDisplay
+            key={index}
+            trio={trio}
+            onRemove={() => removeTrio(index)}
+            size="medium"
+          />
+        ))}
+      </TrioList>
+
+      {error && (
+        <div
+          style={{
+            color: "#ef4444",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {error}
+        </div>
+      )}
+
+      <Actions>
+        <Button onClick={handleSubmit} size="large">
+          Calculer le Score
+        </Button>
+      </Actions>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   max-width: 1200px;
@@ -46,69 +115,3 @@ const LoadingMessage = styled.div`
   font-size: 1.125rem;
   color: #667eea;
 `;
-
-export function ReviewPanel() {
-  const { completedTrios, removeTrio, setResults, drivers, cars, circuits } = useGame();
-  const { calculateScores, calculating } = useScoreCalculation();
-  const [error, setError] = useState(null);
-
-  const handleSubmit = async () => {
-    try {
-      setError(null);
-      const { trioScores, finalScore } = await calculateScores(
-        completedTrios,
-        { drivers, cars, circuits }
-      );
-      setResults(trioScores, finalScore);
-    } catch (err) {
-      setError('Erreur lors du calcul des scores: ' + err.message);
-    }
-  };
-
-  if (calculating) {
-    return (
-      <Container>
-        <LoadingMessage>
-          Calcul des scores en cours... ⏳
-        </LoadingMessage>
-      </Container>
-    );
-  }
-
-  return (
-    <Container>
-      <Header>
-        <Title>Révision de vos associations</Title>
-        <Subtitle>
-          Vérifiez vos {completedTrios.length} trios avant de calculer le score
-        </Subtitle>
-      </Header>
-
-      <TrioList>
-        {completedTrios.map((trio, index) => (
-          <TrioDisplay
-            key={index}
-            trio={trio}
-            onRemove={() => removeTrio(index)}
-            size="medium"
-          />
-        ))}
-      </TrioList>
-
-      {error && (
-        <div style={{ color: '#ef4444', textAlign: 'center', marginBottom: '1rem' }}>
-          {error}
-        </div>
-      )}
-
-      <Actions>
-        <Button
-          onClick={handleSubmit}
-          size="large"
-        >
-          Calculer le Score
-        </Button>
-      </Actions>
-    </Container>
-  );
-}

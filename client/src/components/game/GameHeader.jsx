@@ -1,4 +1,16 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+export function GameHeader() {
+  return (
+    <Header>
+      <Title>🏁 Jeu de Matching Racing 🏎️</Title>
+      <Subtitle>
+        Associez les pilotes, voitures et circuits pour obtenir le meilleur
+        score!
+      </Subtitle>
+    </Header>
+  );
+}
 
 const Header = styled.header`
   text-align: center;
@@ -19,12 +31,3 @@ const Subtitle = styled.p`
   font-size: 1.125rem;
   opacity: 0.9;
 `;
-
-export function GameHeader() {
-  return (
-    <Header>
-      <Title>🏁 Jeu de Matching Racing 🏎️</Title>
-      <Subtitle>Associez les pilotes, voitures et circuits pour obtenir le meilleur score!</Subtitle>
-    </Header>
-  );
-}

@@ -1,6 +1,68 @@
-import styled from 'styled-components';
-import { useGame } from '../../context/GameContext';
-import { Button } from '../shared/Button';
+import styled from "styled-components";
+import { useGame } from "../../context/GameContext";
+import { Button } from "../shared/Button";
+
+const getIcon = (type) => {
+  switch (type) {
+    case "driver":
+      return "👤";
+    case "car":
+      return "🏎️";
+    case "circuit":
+      return "🏁";
+    default:
+      return "❓";
+  }
+};
+
+export function TrioBuilder({ currentTrio }) {
+  const { completeTrio } = useGame();
+  const isComplete =
+    currentTrio.driver && currentTrio.car && currentTrio.circuit;
+
+  return (
+    <Container>
+      <Title>Trio en construction</Title>
+      <TrioContainer>
+        <Slot $filled={!!currentTrio.driver}>
+          <SlotIcon>{getIcon("driver")}</SlotIcon>
+          <SlotLabel>Pilote</SlotLabel>
+          <SlotValue $filled={!!currentTrio.driver}>
+            {currentTrio.driver || "?"}
+          </SlotValue>
+        </Slot>
+
+        <Connector>+</Connector>
+
+        <Slot $filled={!!currentTrio.car}>
+          <SlotIcon>{getIcon("car")}</SlotIcon>
+          <SlotLabel>Voiture</SlotLabel>
+          <SlotValue $filled={!!currentTrio.car}>
+            {currentTrio.car || "?"}
+          </SlotValue>
+        </Slot>
+
+        <Connector>+</Connector>
+
+        <Slot $filled={!!currentTrio.circuit}>
+          <SlotIcon>{getIcon("circuit")}</SlotIcon>
+          <SlotLabel>Circuit</SlotLabel>
+          <SlotValue $filled={!!currentTrio.circuit}>
+            {currentTrio.circuit || "?"}
+          </SlotValue>
+        </Slot>
+      </TrioContainer>
+
+      <Actions>
+        <Button onClick={completeTrio} disabled={!isComplete}>
+          Valider le trio
+        </Button>
+      </Actions>
+
+      <Hint>Cliquez sur une sélection pour la désélectionner</Hint>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   padding: 1.5rem;
@@ -33,9 +95,9 @@ const Slot = styled.div`
   min-width: 120px;
   min-height: 120px;
   padding: 1rem;
-  border: 2px solid ${props => props.$filled ? '#667eea' : '#e5e7eb'};
+  border: 2px solid ${(props) => (props.$filled ? "#667eea" : "#e5e7eb")};
   border-radius: 8px;
-  background: ${props => props.$filled ? '#667eea10' : '#ffffff'};
+  background: ${(props) => (props.$filled ? "#667eea10" : "#ffffff")};
   transition: all 0.2s;
 `;
 
@@ -54,7 +116,7 @@ const SlotLabel = styled.div`
 const SlotValue = styled.div`
   font-size: 0.875rem;
   font-weight: 600;
-  color: ${props => props.$filled ? '#667eea' : '#9ca3af'};
+  color: ${(props) => (props.$filled ? "#667eea" : "#9ca3af")};
 `;
 
 const Connector = styled.div`
@@ -76,62 +138,3 @@ const Hint = styled.div`
   color: #6b7280;
   font-style: italic;
 `;
-
-const getIcon = (type) => {
-  switch (type) {
-    case 'driver': return '👤';
-    case 'car': return '🏎️';
-    case 'circuit': return '🏁';
-    default: return '❓';
-  }
-};
-
-export function TrioBuilder({ currentTrio }) {
-  const { completeTrio } = useGame();
-  const isComplete = currentTrio.driver && currentTrio.car && currentTrio.circuit;
-
-  return (
-    <Container>
-      <Title>Trio en construction</Title>
-      <TrioContainer>
-        <Slot $filled={!!currentTrio.driver}>
-          <SlotIcon>{getIcon('driver')}</SlotIcon>
-          <SlotLabel>Pilote</SlotLabel>
-          <SlotValue $filled={!!currentTrio.driver}>
-            {currentTrio.driver || '?'}
-          </SlotValue>
-        </Slot>
-
-        <Connector>+</Connector>
-
-        <Slot $filled={!!currentTrio.car}>
-          <SlotIcon>{getIcon('car')}</SlotIcon>
-          <SlotLabel>Voiture</SlotLabel>
-          <SlotValue $filled={!!currentTrio.car}>
-            {currentTrio.car || '?'}
-          </SlotValue>
-        </Slot>
-
-        <Connector>+</Connector>
-
-        <Slot $filled={!!currentTrio.circuit}>
-          <SlotIcon>{getIcon('circuit')}</SlotIcon>
-          <SlotLabel>Circuit</SlotLabel>
-          <SlotValue $filled={!!currentTrio.circuit}>
-            {currentTrio.circuit || '?'}
-          </SlotValue>
-        </Slot>
-      </TrioContainer>
-
-      <Actions>
-        <Button onClick={completeTrio} disabled={!isComplete}>
-          Valider le trio
-        </Button>
-      </Actions>
-
-      <Hint>
-        Cliquez sur une sélection pour la désélectionner
-      </Hint>
-    </Container>
-  );
-}

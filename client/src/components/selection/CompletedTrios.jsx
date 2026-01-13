@@ -1,30 +1,6 @@
-import styled from 'styled-components';
-import { TrioDisplay } from '../shared/TrioDisplay';
-import { useGame } from '../../context/GameContext';
-
-const Container = styled.div`
-  margin-top: 2rem;
-`;
-
-const Title = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-`;
-
-const TrioList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const EmptyState = styled.div`
-  text-align: center;
-  padding: 2rem;
-  color: #9ca3af;
-  font-style: italic;
-`;
+import styled from "styled-components";
+import { TrioDisplay } from "../shared/TrioDisplay";
+import { useGame } from "../../context/GameContext";
 
 export function CompletedTrios({ trios }) {
   const { removeTrio } = useGame();
@@ -54,3 +30,27 @@ export function CompletedTrios({ trios }) {
     </Container>
   );
 }
+
+const Container = styled.div`
+  margin-top: 2rem;
+`;
+
+const Title = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+`;
+
+const TrioList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+  font-style: italic;
+`;

@@ -392,7 +392,7 @@ const cars = {
     0,
     "escarpe",
   ],
-  DaciaSandrider: [
+  Peugeot2008: [
     "fluide",
     "adherenceModeree",
     "longue",

@@ -99,6 +99,7 @@ const Subtitle = styled.p`
 const TrioList = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
 `;
@@ -107,6 +108,7 @@ const Actions = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const LoadingMessage = styled.div`

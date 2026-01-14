@@ -45,6 +45,7 @@ const Title = styled.h3`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-items: center;
   gap: 1rem;
 `;

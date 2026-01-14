@@ -66,14 +66,14 @@ export function SelectionPanel() {
 }
 
 const Container = styled.div`
-  max-width: 1200px;
+  width: 85%;
   margin: 0 auto;
 `;
 
 const GridsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 50px;
   margin-bottom: 2rem;
 
   @media (min-width: 768px) {
@@ -86,4 +86,5 @@ const Actions = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 `;

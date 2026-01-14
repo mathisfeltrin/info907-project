@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useGame } from "../../context/GameContext";
 import { Button } from "../shared/Button";
+import { EntityCard } from "../shared/EntityCard";
 
 const getIcon = (type) => {
   switch (type) {
@@ -25,31 +26,58 @@ export function TrioBuilder({ currentTrio }) {
       <Title>Trio en construction</Title>
       <TrioContainer>
         <Slot $filled={!!currentTrio.driver}>
-          <SlotIcon>{getIcon("driver")}</SlotIcon>
-          <SlotLabel>Pilote</SlotLabel>
-          <SlotValue $filled={!!currentTrio.driver}>
-            {currentTrio.driver || "?"}
-          </SlotValue>
+          {currentTrio.driver ? (
+            <EntityCard
+              name={currentTrio.driver}
+              type="driver"
+              isSelected={true}
+              disabled={true}
+            />
+          ) : (
+            <>
+              <SlotIcon>{getIcon("driver")}</SlotIcon>
+              <SlotLabel>Pilote</SlotLabel>
+              <SlotValue>?</SlotValue>
+            </>
+          )}
         </Slot>
 
         <Connector>+</Connector>
 
         <Slot $filled={!!currentTrio.car}>
-          <SlotIcon>{getIcon("car")}</SlotIcon>
-          <SlotLabel>Voiture</SlotLabel>
-          <SlotValue $filled={!!currentTrio.car}>
-            {currentTrio.car || "?"}
-          </SlotValue>
+          {currentTrio.car ? (
+            <EntityCard
+              name={currentTrio.car}
+              type="car"
+              isSelected={true}
+              disabled={true}
+            />
+          ) : (
+            <>
+              <SlotIcon>{getIcon("car")}</SlotIcon>
+              <SlotLabel>Voiture</SlotLabel>
+              <SlotValue>?</SlotValue>
+            </>
+          )}
         </Slot>
 
         <Connector>+</Connector>
 
         <Slot $filled={!!currentTrio.circuit}>
-          <SlotIcon>{getIcon("circuit")}</SlotIcon>
-          <SlotLabel>Circuit</SlotLabel>
-          <SlotValue $filled={!!currentTrio.circuit}>
-            {currentTrio.circuit || "?"}
-          </SlotValue>
+          {currentTrio.circuit ? (
+            <EntityCard
+              name={currentTrio.circuit}
+              type="circuit"
+              isSelected={true}
+              disabled={true}
+            />
+          ) : (
+            <>
+              <SlotIcon>{getIcon("circuit")}</SlotIcon>
+              <SlotLabel>Circuit</SlotLabel>
+              <SlotValue>?</SlotValue>
+            </>
+          )}
         </Slot>
       </TrioContainer>
 
@@ -58,8 +86,6 @@ export function TrioBuilder({ currentTrio }) {
           Valider le trio
         </Button>
       </Actions>
-
-      <Hint>Cliquez sur une sélection pour la désélectionner</Hint>
     </Container>
   );
 }
@@ -92,12 +118,12 @@ const Slot = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
-  min-height: 120px;
-  padding: 1rem;
-  border: 2px solid ${(props) => (props.$filled ? "#667eea" : "#e5e7eb")};
+  min-width: ${(props) => (props.$filled ? "auto" : "200px")};
+  min-height: ${(props) => (props.$filled ? "auto" : "150px")};
+  padding: ${(props) => (props.$filled ? "0" : "1rem")};
+  border: ${(props) => (props.$filled ? "none" : "2px dashed #e5e7eb")};
   border-radius: 8px;
-  background: ${(props) => (props.$filled ? "#667eea10" : "#ffffff")};
+  background: ${(props) => (props.$filled ? "transparent" : "#ffffff")};
   transition: all 0.2s;
 `;
 
@@ -114,9 +140,9 @@ const SlotLabel = styled.div`
 `;
 
 const SlotValue = styled.div`
-  font-size: 0.875rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: ${(props) => (props.$filled ? "#667eea" : "#9ca3af")};
+  color: #9ca3af;
 `;
 
 const Connector = styled.div`
@@ -129,12 +155,4 @@ const Actions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-`;
-
-const Hint = styled.div`
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-style: italic;
 `;

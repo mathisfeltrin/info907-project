@@ -11,30 +11,15 @@ export function TrioDisplay({
   return (
     <Container $size={size}>
       <EntityWrapper>
-        <EntityCard
-          name={trio.driver || "?"}
-          type="driver"
-          disabled
-          isAvailable={false}
-        />
+        <EntityCard name={trio.driver || "?"} type="driver" disabled />
       </EntityWrapper>
       <Connector>+</Connector>
       <EntityWrapper>
-        <EntityCard
-          name={trio.car || "?"}
-          type="car"
-          disabled
-          isAvailable={false}
-        />
+        <EntityCard name={trio.car || "?"} type="car" disabled />
       </EntityWrapper>
       <Connector>+</Connector>
       <EntityWrapper>
-        <EntityCard
-          name={trio.circuit || "?"}
-          type="circuit"
-          disabled
-          isAvailable={false}
-        />
+        <EntityCard name={trio.circuit || "?"} type="circuit" disabled />
       </EntityWrapper>
 
       {scores && (
@@ -95,8 +80,9 @@ const RemoveButton = styled.button`
   height: 24px;
   cursor: pointer;
   font-size: 1rem;
-  line-height: 1;
   transition: background 0.2s;
+  display: flex;
+  justify-content: center;
 
   &:hover {
     background: #dc2626;

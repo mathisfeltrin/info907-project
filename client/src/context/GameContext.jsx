@@ -3,6 +3,12 @@ import { useGameData } from '../hooks/useGameData';
 
 const GameContext = createContext(null);
 
+// Fonction pour sélectionner N éléments aléatoires d'un tableau
+const getRandomItems = (array, count) => {
+  const shuffled = [...array].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, array.length));
+};
+
 export function GameProvider({ children }) {
   const { data, loading, error } = useGameData();
 
@@ -10,6 +16,9 @@ export function GameProvider({ children }) {
   const [availableDrivers, setAvailableDrivers] = useState(new Set());
   const [availableCars, setAvailableCars] = useState(new Set());
   const [availableCircuits, setAvailableCircuits] = useState(new Set());
+  const [shuffledDrivers, setShuffledDrivers] = useState([]);
+  const [shuffledCars, setShuffledCars] = useState([]);
+  const [shuffledCircuits, setShuffledCircuits] = useState([]);
   const [currentTrio, setCurrentTrio] = useState({ driver: null, car: null, circuit: null });
   const [completedTrios, setCompletedTrios] = useState([]);
   const [trioScores, setTrioScores] = useState([]);
@@ -17,9 +26,18 @@ export function GameProvider({ children }) {
 
   useEffect(() => {
     if (data) {
-      setAvailableDrivers(new Set(Object.keys(data.drivers)));
-      setAvailableCars(new Set(Object.keys(data.cars)));
-      setAvailableCircuits(new Set(Object.keys(data.circuits)));
+      // Sélectionner 5 entités aléatoires de chaque type et les mélanger
+      const randomDrivers = getRandomItems(Object.keys(data.drivers), 5);
+      const randomCars = getRandomItems(Object.keys(data.cars), 5);
+      const randomCircuits = getRandomItems(Object.keys(data.circuits), 5);
+
+      setAvailableDrivers(new Set(randomDrivers));
+      setAvailableCars(new Set(randomCars));
+      setAvailableCircuits(new Set(randomCircuits));
+
+      setShuffledDrivers(randomDrivers);
+      setShuffledCars(randomCars);
+      setShuffledCircuits(randomCircuits);
     }
   }, [data]);
 
@@ -65,9 +83,9 @@ export function GameProvider({ children }) {
     setPhase('selection');
   }, [completedTrios]);
 
-  const goToReview = useCallback(() => {
-    setPhase('review');
-  }, []);
+  // const goToReview = useCallback(() => {
+  //   setPhase('review');
+  // }, []);
 
   const setResults = useCallback((scores, final) => {
     setTrioScores(scores);
@@ -77,9 +95,18 @@ export function GameProvider({ children }) {
 
   const resetGame = useCallback(() => {
     if (data) {
-      setAvailableDrivers(new Set(Object.keys(data.drivers)));
-      setAvailableCars(new Set(Object.keys(data.cars)));
-      setAvailableCircuits(new Set(Object.keys(data.circuits)));
+      // Sélectionner de nouvelles entités aléatoires à chaque reset
+      const randomDrivers = getRandomItems(Object.keys(data.drivers), 5);
+      const randomCars = getRandomItems(Object.keys(data.cars), 5);
+      const randomCircuits = getRandomItems(Object.keys(data.circuits), 5);
+
+      setAvailableDrivers(new Set(randomDrivers));
+      setAvailableCars(new Set(randomCars));
+      setAvailableCircuits(new Set(randomCircuits));
+
+      setShuffledDrivers(randomDrivers);
+      setShuffledCars(randomCars);
+      setShuffledCircuits(randomCircuits);
     }
     setCurrentTrio({ driver: null, car: null, circuit: null });
     setCompletedTrios([]);
@@ -99,6 +126,9 @@ export function GameProvider({ children }) {
     availableDrivers,
     availableCars,
     availableCircuits,
+    shuffledDrivers,
+    shuffledCars,
+    shuffledCircuits,
     currentTrio,
     completedTrios,
     trioScores,
@@ -106,7 +136,7 @@ export function GameProvider({ children }) {
     selectEntity,
     completeTrio,
     removeTrio,
-    goToReview,
+    // goToReview,
     setResults,
     resetGame
   };

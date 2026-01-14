@@ -1,5 +1,7 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { useGame } from "../../context/GameContext";
+import { useScoreCalculation } from "../../hooks/useScoreCalculation";
 import { EntityGrid } from "../shared/EntityGrid";
 import { Button } from "../shared/Button";
 import { GameProgress } from "../game/GameProgress";
@@ -14,17 +16,46 @@ export function SelectionPanel() {
     availableDrivers,
     availableCars,
     availableCircuits,
+    shuffledDrivers,
+    shuffledCars,
+    shuffledCircuits,
     currentTrio,
     completedTrios,
     selectEntity,
-    goToReview,
+    setResults,
+    // goToReview,
   } = useGame();
 
-  const canReview = completedTrios.length === 8;
+  const { calculateScores, calculating } = useScoreCalculation();
+  const [error, setError] = useState(null);
+
+  const canSubmit = completedTrios.length === 5;
+
+  const handleSubmit = async () => {
+    try {
+      setError(null);
+      const { trioScores, finalScore } = await calculateScores(completedTrios, {
+        drivers,
+        cars,
+        circuits,
+      });
+      setResults(trioScores, finalScore);
+    } catch (err) {
+      setError("Erreur lors du calcul des scores: " + err.message);
+    }
+  };
+
+  if (calculating) {
+    return (
+      <Container>
+        <LoadingMessage>Calcul des scores en cours... ⏳</LoadingMessage>
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <GameProgress completed={completedTrios.length} total={8} />
+      <GameProgress completed={completedTrios.length} total={5} />
 
       <TrioBuilder currentTrio={currentTrio} />
 
@@ -35,6 +66,7 @@ export function SelectionPanel() {
           availableSet={availableDrivers}
           selectedEntity={currentTrio.driver}
           onSelect={selectEntity}
+          orderedNames={shuffledDrivers}
         />
 
         <EntityGrid
@@ -43,6 +75,7 @@ export function SelectionPanel() {
           availableSet={availableCars}
           selectedEntity={currentTrio.car}
           onSelect={selectEntity}
+          orderedNames={shuffledCars}
         />
 
         <EntityGrid
@@ -51,14 +84,17 @@ export function SelectionPanel() {
           availableSet={availableCircuits}
           selectedEntity={currentTrio.circuit}
           onSelect={selectEntity}
+          orderedNames={shuffledCircuits}
         />
       </GridsContainer>
 
       <CompletedTrios trios={completedTrios} />
 
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <Actions>
-        <Button onClick={goToReview} disabled={!canReview} size="large">
-          Réviser et Soumettre ({completedTrios.length}/8)
+        <Button onClick={handleSubmit} disabled={!canSubmit} size="large">
+          Calculer le Score ({completedTrios.length}/5)
         </Button>
       </Actions>
     </Container>
@@ -87,4 +123,20 @@ const Actions = styled.div`
   gap: 1rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
+`;
+
+const LoadingMessage = styled.div`
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.125rem;
+  color: #667eea;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #fee2e2;
+  border-radius: 8px;
 `;

@@ -16,7 +16,7 @@ export function CompletedTrios({ trios }) {
 
   return (
     <Container>
-      <Title>Trios complétés ({trios.length}/8)</Title>
+      <Title>Trios complétés ({trios.length}/5)</Title>
       <TrioList>
         {trios.map((trio, index) => (
           <TrioDisplay

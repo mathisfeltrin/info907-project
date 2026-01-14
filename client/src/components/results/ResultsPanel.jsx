@@ -31,4 +31,5 @@ const Actions = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 `;

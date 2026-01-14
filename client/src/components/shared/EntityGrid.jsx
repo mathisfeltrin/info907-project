@@ -8,8 +8,9 @@ export function EntityGrid({
   selectedEntity,
   onSelect,
   disabled = false,
+  orderedNames = null,
 }) {
-  const entityNames = Object.keys(entities);
+  const entityNames = orderedNames || Object.keys(entities);
 
   return (
     <Container>

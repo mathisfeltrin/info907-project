@@ -27,18 +27,20 @@ export function TrioBuilder({ currentTrio }) {
       <TrioContainer>
         <Slot $filled={!!currentTrio.driver}>
           {currentTrio.driver ? (
-            <EntityCard
-              name={currentTrio.driver}
-              type="driver"
-              isSelected={true}
-              disabled={true}
-            />
+            <CardWrapper key={currentTrio.driver}>
+              <EntityCard
+                name={currentTrio.driver}
+                type="driver"
+                isSelected={true}
+                disabled={true}
+              />
+            </CardWrapper>
           ) : (
-            <>
+            <EmptyContent>
               <SlotIcon>{getIcon("driver")}</SlotIcon>
               <SlotLabel>Pilote</SlotLabel>
               <SlotValue>?</SlotValue>
-            </>
+            </EmptyContent>
           )}
         </Slot>
 
@@ -46,18 +48,20 @@ export function TrioBuilder({ currentTrio }) {
 
         <Slot $filled={!!currentTrio.car}>
           {currentTrio.car ? (
-            <EntityCard
-              name={currentTrio.car}
-              type="car"
-              isSelected={true}
-              disabled={true}
-            />
+            <CardWrapper key={currentTrio.car}>
+              <EntityCard
+                name={currentTrio.car}
+                type="car"
+                isSelected={true}
+                disabled={true}
+              />
+            </CardWrapper>
           ) : (
-            <>
+            <EmptyContent>
               <SlotIcon>{getIcon("car")}</SlotIcon>
               <SlotLabel>Voiture</SlotLabel>
               <SlotValue>?</SlotValue>
-            </>
+            </EmptyContent>
           )}
         </Slot>
 
@@ -65,18 +69,20 @@ export function TrioBuilder({ currentTrio }) {
 
         <Slot $filled={!!currentTrio.circuit}>
           {currentTrio.circuit ? (
-            <EntityCard
-              name={currentTrio.circuit}
-              type="circuit"
-              isSelected={true}
-              disabled={true}
-            />
+            <CardWrapper key={currentTrio.circuit}>
+              <EntityCard
+                name={currentTrio.circuit}
+                type="circuit"
+                isSelected={true}
+                disabled={true}
+              />
+            </CardWrapper>
           ) : (
-            <>
+            <EmptyContent>
               <SlotIcon>{getIcon("circuit")}</SlotIcon>
               <SlotLabel>Circuit</SlotLabel>
               <SlotValue>?</SlotValue>
-            </>
+            </EmptyContent>
           )}
         </Slot>
       </TrioContainer>
@@ -95,13 +101,14 @@ const Container = styled.div`
   background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
   border: 2px dashed #667eea;
   border-radius: 12px;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 `;
 
-const Title = styled.h3`
+const Title = styled.p`
   font-size: 1.125rem;
   font-weight: 700;
   color: #1f2937;
+  margin: 0;
   margin-bottom: 1rem;
   text-align: center;
 `;
@@ -118,13 +125,45 @@ const Slot = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: ${(props) => (props.$filled ? "auto" : "200px")};
-  min-height: ${(props) => (props.$filled ? "auto" : "150px")};
+  width: 200px;
+  height: 150px;
   padding: ${(props) => (props.$filled ? "0" : "1rem")};
   border: ${(props) => (props.$filled ? "none" : "2px dashed #e5e7eb")};
   border-radius: 8px;
   background: ${(props) => (props.$filled ? "transparent" : "#ffffff")};
-  transition: all 0.2s;
+  transition: background 0.2s, border 0.2s;
+  position: relative;
+  overflow: hidden;
+`;
+
+const CardWrapper = styled.div`
+  animation: fadeIn 0.2s ease-in;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const EmptyContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-in;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const SlotIcon = styled.div`

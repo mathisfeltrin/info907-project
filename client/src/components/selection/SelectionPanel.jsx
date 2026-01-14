@@ -57,7 +57,9 @@ export function SelectionPanel() {
     <Container>
       <GameProgress completed={completedTrios.length} total={5} />
 
-      <TrioBuilder currentTrio={currentTrio} />
+      <StickyWrapper>
+        <TrioBuilder currentTrio={currentTrio} />
+      </StickyWrapper>
 
       <GridsContainer>
         <EntityGrid
@@ -104,6 +106,17 @@ export function SelectionPanel() {
 const Container = styled.div`
   width: 85%;
   margin: 0 auto;
+`;
+
+const StickyWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f9fafb;
+  padding: 1rem 0;
+  margin: 0 -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `;
 
 const GridsContainer = styled.div`

@@ -1,7 +1,7 @@
 {
-  "name": "classification-project",
+  "name": "drivermatch",
   "version": "1.0.0",
-  "description": "Classification project for drivers, circuits and cars",
+  "description": "DriverMatch - Match drivers, cars and circuits for the perfect racing trio",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export function GameHeader() {
   return (
     <Header>
-      <Title>Jeu de Matching Racing</Title>
+      <Title>DriverMatch</Title>
       <Subtitle>
         Associez les pilotes, voitures et circuits pour obtenir le meilleur
         score !
